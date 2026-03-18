@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-public class PriorityQueue
+﻿public class PriorityQueue
 {
     private List<PriorityItem> _queue = new();
 
@@ -17,11 +15,6 @@ public class PriorityQueue
         _queue.Add(newNode);
     }
 
-    private void Remove(int index)
-    {
-        _queue.RemoveAt(index);
-    }
-
     public string Dequeue()
     {
         if (_queue.Count == 0) // Verify the queue is not empty
@@ -31,36 +24,18 @@ public class PriorityQueue
 
         // Find the index of the item with the highest priority to remove
         var highPriorityIndex = 0;
-        for (int index = 0; index < _queue.Count; index++)
+        for (int index = 1; index < _queue.Count - 1; index++)
         {
-            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
+            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
                 highPriorityIndex = index;
-
-            else if (_queue[index].Priority == _queue[highPriorityIndex].Priority)
-            {
-                if (index < highPriorityIndex)
-                    highPriorityIndex = index;
-            }
-
-
         }
 
         // Remove and return the item with the highest priority
         var value = _queue[highPriorityIndex].Value;
-
-        // // DEBUG:
-        // var priority = _queue[highPriorityIndex].Priority;
-        // Console.WriteLine($"{highPriorityIndex},{value},{priority}");
-
-        Remove(highPriorityIndex);
         return value;
-
     }
 
-    public int GetLength()
-    {
-        return _queue.Count();
-    }
+
 
     // DO NOT MODIFY THE CODE IN THIS METHOD
     // The graders rely on this method to check if you fixed all the bugs, so changes to it will cause you to lose points.

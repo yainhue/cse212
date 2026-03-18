@@ -11,7 +11,15 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3) and
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: 1
+    //
+    /*
+    1- The Enqueue method was always adding people to the index 0, shifting the queue out of order
+       . The problem: public void Enqueue(Person person) => _queue.Insert(0, person);
+       . Solution: public void Enqueue(Person person) => _queue.Add(person);
+    */
+    // 
+
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -43,7 +51,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (5), Sue (3)
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
-    // Defect(s) Found: 
+    // Defect(s) Found: 0
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -85,7 +93,35 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Bob (2), Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: 1
+    /*
+    1- Having zero turns did not translate to the player having infinite turns, instead, they got 
+       treated as having no turns left and got discarted from the queue.
+        . The Problem: the "Person" and "TakingTurnsQueue" classes have no way to differentiate between players
+          with finite turns and infinite turns
+        . Solution: Adding an boolean attribute to "Person" that checks if the players start with zero or negative turns
+        . Implementation in code:
+        Internal Person(string name, int turns)
+        {
+            Name = name;
+            Turns = turns;
+            // If the player has zero or negative turns, then they have infinite turns.
+            if (turns == 0 || turns < 0)
+            {
+                HasInfiniteTurns = true;
+            }
+            else
+            {
+                HasInfiniteTurns = false;
+            }
+        }
+
+        TakingTurnsQueue => 
+            else if (person.HasInfiniteTurns == true)
+            {
+                _people.Enqueue(person);
+            }
+    */
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -116,7 +152,7 @@ public class TakingTurnsQueueTests
     // Scenario: Create a queue with the following people and turns: Tim (Forever), Sue (3)
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
-    // Defect(s) Found: 
+    // Defect(s) Found: 0
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -143,7 +179,7 @@ public class TakingTurnsQueueTests
     [TestMethod]
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
-    // Defect(s) Found: 
+    // Defect(s) Found: 0
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();

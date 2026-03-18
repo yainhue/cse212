@@ -23,6 +23,12 @@ public class PersonQueue
         return person;
     }
 
+    public Person Peek()
+    {
+        var person = _queue[0];
+        return person;
+    }
+
     public bool IsEmpty()
     {
         return Length == 0;

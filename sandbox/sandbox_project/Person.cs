@@ -2,22 +2,11 @@ public class Person
 {
     public readonly string Name;
     public int Turns { get; set; }
-    public bool HasInfiniteTurns;
 
     internal Person(string name, int turns)
     {
         Name = name;
         Turns = turns;
-
-        // If the player has zero or negative turns, then they have "infinite" turns.
-        if (turns == 0 || turns < 0)
-        {
-            HasInfiniteTurns = true;
-        }
-        else
-        {
-            HasInfiniteTurns = false;
-        }
     }
 
     public override string ToString()
