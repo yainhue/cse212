@@ -1,0 +1,38 @@
+{
+      "type": "FeatureCollection",
+      "metadata": {
+        "generated": 1672531200000,
+        "title": "USGS Earthquakes",
+        "count": 2
+      },
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "mag": 4.5,
+            "place": "10km NE of San Jose, California",
+            "time": 1672527600000,
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci12345678"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-121.9, 37.3, 10.0]
+          },
+          "id": "ci12345678"
+        },
+        {
+          "type": "Feature",
+          "properties": {
+            "mag": 5.2,
+            "place": "Near coast of Chile",
+            "time": 1672528600000,
+            "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us98765432"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [-72.6, -36.8, 20.0]
+          },
+          "id": "us98765432"
+        }
+      ]
+    }

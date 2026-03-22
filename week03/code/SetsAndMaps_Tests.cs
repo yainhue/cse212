@@ -130,7 +130,7 @@ public class FindPairsTests
 public class SummarizeDegreesTests
 {
     [TestMethod]
-    public void SummarizeCensusDegrees()
+    public void SummarizeCensusDegrees() // BORRAR ESTO ARRIBA!
     {
         var result = SetsAndMaps.SummarizeDegrees("../../../census.txt");
         var expected = new Dictionary<string, int> {
