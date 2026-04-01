@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics;
 
 public static class Recursion
 {
@@ -15,7 +16,14 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        if (n <= 1)
+        {
+            return 1;
+        }
+        else
+        {
+            return (Convert.ToInt32(Math.Pow(n, 2))) + SumSquaresRecursive(n - 1);
+        }
     }
 
     /// <summary>
@@ -40,6 +48,73 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+
+        // Convert letters to an string[]
+        string[] lettersArray = new string[letters.Length];
+        for (int i = 0; i < letters.Length; i++)
+        {
+            lettersArray[i] = letters[i].ToString();
+        }
+
+        // Calculate posible permutations
+        int posiblePermutations = Factorial(lettersArray.Count()) / (lettersArray.Count() - size);
+
+        // Base case - the amount of results match the amount of expected permutations
+        int resultsSize = results.Count();
+        if (resultsSize == posiblePermutations)
+        {
+            Console.WriteLine("Results:");
+            foreach (var r in results)
+            {
+                Console.WriteLine(r);
+            }
+            return;
+        }
+
+        // the word matches the expected size
+        else if (word.Length == size)
+        {
+            if (!results.Contains(word))
+            {
+                results.Add(word);
+                Debug.WriteLine($"- {word}");
+                return;
+                // Added a new word to the results list, continue looking for new words with more recursive calls
+            }
+            else
+            {
+                PermutationsChoose(results, letters, size, word);
+                // word was already on the results list, continue looking for new words with more recursive calls
+            }
+        }
+
+        // the word does not match the expected size, continue adding letters
+        else
+        {
+            for (int i = 0; i < letters.Length; i++)
+            {
+                if (!word.Contains(lettersArray[i]))
+                {
+                    string newWord = word + letters[i];
+                    PermutationsChoose(results, letters, size, newWord);
+                }
+            }
+        }
+    }
+
+    // HELPER METHOD:
+    private static int Factorial(int n)
+    {
+        if (n <= 1)
+        {
+            // 1! = 1 (no recursion)
+            return 1;
+        }
+        else
+        {
+            // n! = n * (n - 1)!
+            return (n * Factorial(n - 1));
+        }
     }
 
     /// <summary>
@@ -119,7 +194,40 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+
+        // Convert pattern to an string[]
+        string[] patternArray = new string[pattern.Length];
+        for (int i = 0; i < pattern.Length; i++)
+        {
+            patternArray[i] = pattern[i].ToString();
+        }
+
+        while (pattern.Contains("*") && patternArray.Contains("*"))
+        {
+            int i = Array.IndexOf(patternArray, "*");
+
+            patternArray[i] = "0";
+            string newPattern = string.Concat(patternArray);
+            WildcardBinary(newPattern, results);
+            patternArray[i] = "1";
+            newPattern = string.Concat(patternArray);
+            WildcardBinary(newPattern, results);
+        }
+
+        if (!results.Contains(pattern) && !pattern.Contains("*"))
+        {
+            results.Add(pattern);
+            Debug.WriteLine($"- {pattern}");
+            return;
+            // Added a new pattern to the results list, end this branch and continue looking for a new pattern
+        }
+        else
+        {
+            return;
+            // pattern was already on the results list, continue looking for a new pattern
+        }
     }
+
 
     /// <summary>
     /// Use recursion to insert all paths that start at (0,0) and end at the
@@ -129,10 +237,11 @@ public static class Recursion
     {
         // If this is the first time running the function, then we need
         // to initialize the currPath list.
-        if (currPath == null) {
+        if (currPath == null)
+        {
             currPath = new List<ValueTuple<int, int>>();
         }
-        
+
         // currPath.Add((1,2)); // Use this syntax to add to the current path
 
         // TODO Start Problem 5
