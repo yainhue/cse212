@@ -120,8 +120,6 @@ public class LinkedList : IEnumerable<int>
 
         while (curr is not null)
         {
-
-
             if (curr.Data == value)
             {
                 // If the location of 'value' is at the end of the list,
